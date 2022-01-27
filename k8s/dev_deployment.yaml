@@ -74,7 +74,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: dgc
-                  key: DGC_SERVICEURL
+                  key: SERVICEURL
            # - name: LOGGING_LEVEL_ROOT
            #   value: DEBUG
           ports:
