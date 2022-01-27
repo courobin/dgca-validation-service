@@ -1,0 +1,132 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: validation-service
+  namespace: dgca-test
+  labels:
+    app: validation-service
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app: validation-service
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: validation-service
+  namespace: dgca-test
+  labels:
+    app: validation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: validation-service
+  template:
+    metadata:
+      labels:
+        app: validation-service
+    spec:
+      volumes:
+        - name: destination
+          secret:
+            secretName: destination-service-binding-validation
+        - name: xsuaa
+          secret:
+            secretName: uaa-service-binding-validation
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: validation-service
+          image: docker.pkg.github.com/courobin/dgca-validation-service/dgca-validation-service:1.0.5-ea7576e
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "btp,devvalidate"
+            - name: DGC_GATEWAY_CONNECTOR_TLSKEYSTORE_PATH
+              value: "false"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://100.70.120.84:5432/postgresdb
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_PASSWORD
+            - name: DGC_ACCESSKEYS
+              valueFrom:
+                configMapKeyRef:
+                  name: dgc
+                  key: access_key
+           # - name: LOGGING_LEVEL_ROOT
+           #   value: DEBUG
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 443
+          volumeMounts:
+            - name: destination
+              mountPath: "/etc/secrets/sapcp/destination/destination-service-instance-validation"
+              readOnly: true
+            - name: xsuaa
+              mountPath: "/etc/secrets/sapcp/xsuaa/uaa-service-instance-validation"
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: uaa-service-instance-validation
+  namespace: dgca-test
+spec:
+  clusterServiceClassExternalName: xsuaa
+  clusterServicePlanExternalName: application
+  parameters:
+    xsappname: xsuaa-kyma-validation
+    tenant-mode: dedicated
+    oauth2-configuration:
+      redirect-uris:
+        - https://*/**
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: uaa-service-binding-validation
+  namespace: dgca-test
+spec:
+  instanceRef:
+    name: uaa-service-instance-validation
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: destination-service-instance-validation
+  namespace: dgca-test
+spec:
+  clusterServiceClassExternalName: destination
+  clusterServicePlanExternalName: lite
+
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: destination-service-binding-validation
+  namespace: dgca-test
+spec:
+  instanceRef:
+    name: destination-service-instance-validation
