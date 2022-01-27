@@ -49,6 +49,10 @@ spec:
               value: "btp,devvalidate"
             - name: DGC_GATEWAY_CONNECTOR_TLSKEYSTORE_PATH
               value: "false"
+            - name: MANAGEMENT_ENDPOINT_HEALTH_ENABLED
+              value: "false"
+            - name: MANAGEMENT_ENDPOINT_INFO_ENABLED
+              value: "false"
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://100.70.120.84:5432/postgresdb
             - name: SPRING_DATASOURCE_USERNAME
@@ -65,7 +69,12 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: dgc
-                  key: access_key
+                  key: ACCESSKEYS
+            - name: DGC_SERVICEURL
+              valueFrom:
+                configMapKeyRef:
+                  name: dgc
+                  key: DGC_SERVICEURL
            # - name: LOGGING_LEVEL_ROOT
            #   value: DEBUG
           ports:
