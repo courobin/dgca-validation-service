@@ -53,18 +53,18 @@ spec:
               value: "false"
             - name: MANAGEMENT_ENDPOINT_INFO_ENABLED
               value: "false"
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://db-validation/postgresdb
-            - name: SPRING_DATASOURCE_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: dgca-validation
-                  key: POSTGRES_USER
-            - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: dgca-validation
-                  key: POSTGRES_PASSWORD
+#             - name: SPRING_DATASOURCE_URL
+#               value: jdbc:postgresql://db-validation/postgresdb
+#             - name: SPRING_DATASOURCE_USERNAME
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: dgca-validation
+#                   key: POSTGRES_USER
+#             - name: SPRING_DATASOURCE_PASSWORD
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: dgca-validation
+#                   key: POSTGRES_PASSWORD
             - name: DGC_ACCESSKEYS
               valueFrom:
                 configMapKeyRef:
