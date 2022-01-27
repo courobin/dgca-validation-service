@@ -58,23 +58,23 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-config
+                  name: dgca-validation
                   key: POSTGRES_USER
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-config
+                  name: dgca-validation
                   key: POSTGRES_PASSWORD
             - name: DGC_ACCESSKEYS
               valueFrom:
                 configMapKeyRef:
-                  name: dgc
-                  key: ACCESSKEYS
+                  name: dgca-validation
+                  key: DGC_ACCESSKEYS
             - name: DGC_SERVICEURL
               valueFrom:
                 configMapKeyRef:
-                  name: dgc
-                  key: SERVICEURL
+                  name: dgca-validation
+                  key: DGC_SERVICEURL
            # - name: LOGGING_LEVEL_ROOT
            #   value: DEBUG
           ports:
