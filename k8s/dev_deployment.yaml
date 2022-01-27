@@ -54,7 +54,7 @@ spec:
             - name: MANAGEMENT_ENDPOINT_INFO_ENABLED
               value: "false"
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://100.70.120.84:5432/postgresdb
+              value: jdbc:postgresql://db-validation/postgresdb
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 configMapKeyRef:
