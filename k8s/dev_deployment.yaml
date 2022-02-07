@@ -44,39 +44,9 @@ spec:
         - name: validation-service
           image: docker.pkg.github.com/courobin/dgca-validation-service/dgca-validation-service-cloudfoundry:0.0.0-ac2e47e
           imagePullPolicy: Always
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "btp,devvalidate"
-            - name: DGC_GATEWAY_CONNECTOR_TLSKEYSTORE_PATH
-              value: "false"
-            - name: MANAGEMENT_ENDPOINT_HEALTH_ENABLED
-              value: "false"
-            - name: MANAGEMENT_ENDPOINT_INFO_ENABLED
-              value: "false"
-#             - name: SPRING_DATASOURCE_URL
-#               value: jdbc:postgresql://db-validation/postgresdb
-#             - name: SPRING_DATASOURCE_USERNAME
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: dgca-validation
-#                   key: POSTGRES_USER
-#             - name: SPRING_DATASOURCE_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: dgca-validation
-#                   key: POSTGRES_PASSWORD
-            - name: DGC_ACCESSKEYS
-              valueFrom:
-                configMapKeyRef:
-                  name: dgca-validation
-                  key: DGC_ACCESSKEYS
-            - name: DGC_SERVICEURL
-              valueFrom:
-                configMapKeyRef:
-                  name: dgca-validation
-                  key: DGC_SERVICEURL
-           # - name: LOGGING_LEVEL_ROOT
-           #   value: DEBUG
+          envFrom:
+            - configMapRef:
+                name: dgca-validation
           ports:
             - name: http
               containerPort: 8080
