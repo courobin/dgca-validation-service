@@ -1,3 +1,5 @@
+package eu.europa.ec.dgc.validation.utils.btp;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nimbusds.jose.JOSEException;
