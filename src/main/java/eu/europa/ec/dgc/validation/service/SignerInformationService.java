@@ -153,6 +153,7 @@ public class SignerInformationService {
         signerEntity.setKid(kid);
         signerEntity.setCreatedAt(createdAt);
         signerEntity.setRawData(rawData);
+        signerEntity.remove("id");
         log.info("SIGNNNNNNERRRR2 {}", signerEntity);
         signerInformationRepository.save(signerEntity);
     }
