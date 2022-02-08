@@ -149,7 +149,7 @@ public class SignerInformationService {
      */
     private void saveSignerCertificate(String kid, ZonedDateTime createdAt, String rawData) {
         SignerInformationEntity signerEntity = new SignerInformationEntity();
-        log.info("SIGNNNNNNERRRR {}"; signerEntity);
+        log.info("SIGNNNNNNERRRR {}", signerEntity);
         signerEntity.setKid(kid);
         signerEntity.setCreatedAt(createdAt);
         signerEntity.setRawData(rawData);
