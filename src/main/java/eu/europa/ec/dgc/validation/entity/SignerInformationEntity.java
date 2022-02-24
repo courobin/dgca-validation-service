@@ -37,7 +37,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "signer_information_vs")
+@Table(name = "signer_information_v")
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignerInformationEntity {
